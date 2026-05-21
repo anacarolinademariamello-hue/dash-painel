@@ -31,6 +31,40 @@ SIDEBAR_CSS = """
     border: 1px solid #2d4a6b !important;
 }
 
+/* ── Selectboxes e text inputs com tema escuro ───────────────────── */
+[data-testid="stSidebar"] .stSelectbox > div > div,
+[data-testid="stSidebar"] .stTextInput > div > div > input {
+    background-color: #1a3550 !important;
+    color: #e2e8f0 !important;
+    border-color: #2d4a6b !important;
+}
+/* Texto selecionado dentro do selectbox */
+[data-testid="stSidebar"] .stSelectbox > div > div > div[data-baseweb="select"] > div,
+[data-testid="stSidebar"] [data-baseweb="select"] > div {
+    background-color: #1a3550 !important;
+    color: #e2e8f0 !important;
+    border-color: #2d4a6b !important;
+}
+/* Ícone de seta do selectbox */
+[data-testid="stSidebar"] [data-baseweb="select"] svg {
+    fill: #93c5fd !important;
+}
+/* Placeholder */
+[data-testid="stSidebar"] input::placeholder {
+    color: #64748b !important;
+}
+/* Label dos widgets */
+[data-testid="stSidebar"] label {
+    color: #94a3b8 !important;
+    font-size: 0.8rem !important;
+}
+/* Headings na sidebar */
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    color: #f1f5f9 !important;
+}
+
 /* ── Layout geral ────────────────────────────────────────────────── */
 .main .block-container {
     max-width: 1400px;
