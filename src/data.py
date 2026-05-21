@@ -258,6 +258,51 @@ def load_captions_summary_all(days: int = 30) -> dict[str, dict]:
     return summary
 
 
+# ── Copies de Ads ─────────────────────────────────────────────────────────────
+
+@st.cache_data(ttl=60)
+def load_copies_summary_all(days: int = 30) -> dict[str, dict]:
+    """
+    Carrega sumário de copies de Meta Ads de TODOS os clientes nos últimos N dias.
+    Tabela: saved_copies. Status: 'aprovada' | 'rejeitada'.
+    Retorna {client_key: {aprovadas, rejeitadas}}.
+    """
+    if not _configured():
+        return {}
+    url, _ = _creds()
+    since = (datetime.date.today() - datetime.timedelta(days=days)).isoformat()
+    try:
+        r = requests.get(
+            f"{url}/rest/v1/saved_copies",
+            headers=_auth_headers(),
+            params={
+                "created_at": f"gte.{since}",
+                "select":     "client_key,status",
+                "limit":      "2000",
+            },
+            timeout=15,
+        )
+        r.raise_for_status()
+        rows = r.json()
+    except Exception:
+        return {}
+
+    summary: dict[str, dict] = {}
+    for row in rows:
+        ck = row.get("client_key", "")
+        if not ck:
+            continue
+        if ck not in summary:
+            summary[ck] = {"aprovadas": 0, "rejeitadas": 0}
+        st_val = row.get("status", "")
+        if st_val == "aprovada":
+            summary[ck]["aprovadas"] += 1
+        elif st_val == "rejeitada":
+            summary[ck]["rejeitadas"] += 1
+
+    return summary
+
+
 # ── Score e semáforo ──────────────────────────────────────────────────────────
 
 def compute_health_score(
@@ -265,6 +310,7 @@ def compute_health_score(
     cal: dict | None,
     scripts: dict | None,
     captions: dict | None,
+    copies: dict | None = None,
 ) -> tuple[int, str, list[str]]:
     """
     Calcula score 0–100 e retorna (score, cor_semaforo, lista_alertas).

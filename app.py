@@ -12,6 +12,7 @@ from src.data import (
     load_calendar_summary_all,
     load_scripts_summary_all,
     load_captions_summary_all,
+    load_copies_summary_all,
     compute_health_score,
     parse_report_metrics,
 )
@@ -95,6 +96,7 @@ with st.spinner("Carregando dados..."):
     cal_summary  = load_calendar_summary_all(mes_selecionado)
     scr_summary  = load_scripts_summary_all(30)
     cap_summary  = load_captions_summary_all(30)
+    cop_summary  = load_copies_summary_all(30)
 
 if not clients:
     st.warning("Nenhum cliente cadastrado ou Supabase não configurado.")
@@ -109,13 +111,15 @@ for c in clients:
     cal    = cal_summary.get(ck)
     scr    = scr_summary.get(ck)
     cap    = cap_summary.get(ck)
-    score, color, alerts = compute_health_score(report, cal, scr, cap)
+    cop    = cop_summary.get(ck)
+    score, color, alerts = compute_health_score(report, cal, scr, cap, cop)
     enriched.append({
         **c,
         "_report": report,
         "_cal":    cal,
         "_scr":    scr,
         "_cap":    cap,
+        "_cop":    cop,
         "_score":  score,
         "_color":  color,
         "_alerts": alerts,
@@ -244,6 +248,7 @@ else:
         cal    = c["_cal"] or {}
         scr    = c["_scr"] or {}
         cap    = c["_cap"] or {}
+        cop    = c["_cop"] or {}
 
         # Semáforo e cabeçalho
         semaforo_html = f'<span class="semaforo semaforo-{color}"></span>'
@@ -329,6 +334,10 @@ else:
         sc_rej_color  = "section-val-yellow" if sc_rejeit  > 0 else "section-val"
         cap_rej_color = "section-val-yellow" if cap_rejeit > 0 else "section-val"
 
+        cop_aprov  = cop.get("aprovadas",  0)
+        cop_rejeit = cop.get("rejeitadas", 0)
+        cop_rej_color = "section-val-yellow" if cop_rejeit > 0 else "section-val"
+
         content_html = (
             f'<div class="card-section">'
             f'<div class="section-title">✍️ Conteúdo — últimos 30 dias</div>'
@@ -341,6 +350,10 @@ else:
             f'<div class="section-row"><span>Aprovadas</span><span class="section-val-green">{cap_aprov}</span></div>'
             f'<div class="section-row"><span>Rejeitadas</span><span class="{cap_rej_color}">{cap_rejeit}</span></div>'
             f'<div class="section-row"><span>Pendentes</span><span class="section-val">{cap_pend}</span></div>'
+            f'<hr class="divider">'
+            f'<div style="color:#64748b;font-size:0.72rem;margin-bottom:4px;">Copies Ads</div>'
+            f'<div class="section-row"><span>Aprovadas</span><span class="section-val-green">{cop_aprov}</span></div>'
+            f'<div class="section-row"><span>Rejeitadas</span><span class="{cop_rej_color}">{cop_rejeit}</span></div>'
             f'</div>'
         )
 
