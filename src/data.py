@@ -387,11 +387,22 @@ def parse_report_metrics(report: dict) -> dict:
             m = json.loads(m)
         except Exception:
             m = {}
+
+    # Alcance orgânico: usa total_organic diretamente,
+    # ou calcula total_reach - total_paid_reach como fallback
+    total_organic = int(m.get("total_organic") or 0)
+    total_reach   = int(m.get("total_reach")   or 0)
+    total_paid    = int(m.get("total_paid_reach") or 0)
+    if total_organic == 0 and total_reach > 0:
+        total_organic = max(0, total_reach - total_paid)
+
     return {
         "date_from":       report.get("date_from", "")[:10],
         "date_to":         report.get("date_to", "")[:10],
         "generated_at":    report.get("generated_at", "")[:10],
-        "org_reach":       int(m.get("org_reach") or 0),
+        "org_reach":       total_organic,
+        "total_reach":     total_reach,
+        "paid_reach":      total_paid,
         "org_eng_rate":    float(m.get("org_eng_rate") or 0),
         "followers_gained":int(m.get("followers_gained") or 0),
         "total_posts":     int(m.get("total_posts") or 0),
