@@ -267,48 +267,25 @@ else:
                 else "section-val-green"
             ) if rep_age.startswith("há") else "section-val-green"
 
-            report_html = f"""
-            <div class="card-section">
-                <div class="section-title">📈 Último Relatório</div>
-                <div class="section-row">
-                    <span>Gerado</span>
-                    <span class="{rep_age_class}">{rep_date} <span style="color:#94a3b8;font-size:0.75rem;">({rep_age})</span></span>
-                </div>
-                <div class="section-row">
-                    <span>Período</span>
-                    <span class="section-val" style="font-size:0.75rem;">{rep_period}</span>
-                </div>
-                <div class="section-row">
-                    <span>Alcance orgânico</span>
-                    <span class="section-val">{reach_fmt}</span>
-                </div>
-                <div class="section-row">
-                    <span>Engajamento</span>
-                    <span class="section-val">{eng_fmt}</span>
-                </div>
-                <div class="section-row">
-                    <span>Seguidores ganhos</span>
-                    <span class="section-val-green">{foll_fmt}</span>
-                </div>
-                <div class="section-row">
-                    <span>Posts analisados</span>
-                    <span class="section-val">{posts_fmt}</span>
-                </div>
-                <div class="section-row">
-                    <span>Melhor formato</span>
-                    <span class="section-val">{best_fmt}</span>
-                </div>
-            </div>
-            """
+            report_html = (
+                f'<div class="card-section">'
+                f'<div class="section-title">📈 Último Relatório</div>'
+                f'<div class="section-row"><span>Gerado</span><span class="{rep_age_class}">{rep_date} <span style="color:#94a3b8;font-size:0.75rem;">({rep_age})</span></span></div>'
+                f'<div class="section-row"><span>Período</span><span class="section-val" style="font-size:0.75rem;">{rep_period}</span></div>'
+                f'<div class="section-row"><span>Alcance orgânico</span><span class="section-val">{reach_fmt}</span></div>'
+                f'<div class="section-row"><span>Engajamento</span><span class="section-val">{eng_fmt}</span></div>'
+                f'<div class="section-row"><span>Seguidores ganhos</span><span class="section-val-green">{foll_fmt}</span></div>'
+                f'<div class="section-row"><span>Posts analisados</span><span class="section-val">{posts_fmt}</span></div>'
+                f'<div class="section-row"><span>Melhor formato</span><span class="section-val">{best_fmt}</span></div>'
+                f'</div>'
+            )
         else:
-            report_html = """
-            <div class="card-section">
-                <div class="section-title">📈 Último Relatório</div>
-                <div style="color:#ef4444;font-size:0.82rem;padding:8px 0;">
-                    ⚠️ Nenhum relatório gerado
-                </div>
-            </div>
-            """
+            report_html = (
+                '<div class="card-section">'
+                '<div class="section-title">📈 Último Relatório</div>'
+                '<div style="color:#ef4444;font-size:0.82rem;padding:8px 0;">⚠️ Nenhum relatório gerado</div>'
+                '</div>'
+            )
 
         # ── Seção: Calendário ────────────────────────────────────
         cal_total    = cal.get("total", 0)
@@ -319,47 +296,27 @@ else:
         cal_urg      = cal.get("urgentes", 0)
 
         if cal_total == 0:
-            cal_html = f"""
-            <div class="card-section">
-                <div class="section-title">📅 Calendário — {mes_label}</div>
-                <div style="color:#f59e0b;font-size:0.82rem;padding:8px 0;">
-                    ⚠️ Nenhum calendário gerado
-                </div>
-            </div>
-            """
+            cal_html = (
+                f'<div class="card-section">'
+                f'<div class="section-title">📅 Calendário — {mes_label}</div>'
+                f'<div style="color:#f59e0b;font-size:0.82rem;padding:8px 0;">⚠️ Nenhum calendário gerado</div>'
+                f'</div>'
+            )
         else:
             urg_color  = "section-val-red"    if cal_urg  > 0 else "section-val-green"
             alt_color  = "section-val-yellow"  if cal_alt  > 0 else "section-val-green"
             pend_color = "section-val-yellow"  if cal_pend > 0 else "section-val-green"
-            cal_html = f"""
-            <div class="card-section">
-                <div class="section-title">📅 Calendário — {mes_label}</div>
-                <div class="section-row">
-                    <span>Total de posts</span>
-                    <span class="section-val">{cal_total}</span>
-                </div>
-                <div class="section-row">
-                    <span>Publicados</span>
-                    <span class="section-val">{cal_pub}</span>
-                </div>
-                <div class="section-row">
-                    <span>Aprovados pelo cliente</span>
-                    <span class="section-val-green">{cal_aprov}</span>
-                </div>
-                <div class="section-row">
-                    <span>Pediu alteração</span>
-                    <span class="{alt_color}">{cal_alt}</span>
-                </div>
-                <div class="section-row">
-                    <span>Pendente (cliente)</span>
-                    <span class="{pend_color}">{cal_pend}</span>
-                </div>
-                <div class="section-row">
-                    <span>🚨 Urgentes</span>
-                    <span class="{urg_color}">{cal_urg}</span>
-                </div>
-            </div>
-            """
+            cal_html = (
+                f'<div class="card-section">'
+                f'<div class="section-title">📅 Calendário — {mes_label}</div>'
+                f'<div class="section-row"><span>Total de posts</span><span class="section-val">{cal_total}</span></div>'
+                f'<div class="section-row"><span>Publicados</span><span class="section-val">{cal_pub}</span></div>'
+                f'<div class="section-row"><span>Aprovados pelo cliente</span><span class="section-val-green">{cal_aprov}</span></div>'
+                f'<div class="section-row"><span>Pediu alteração</span><span class="{alt_color}">{cal_alt}</span></div>'
+                f'<div class="section-row"><span>Pendente (cliente)</span><span class="{pend_color}">{cal_pend}</span></div>'
+                f'<div class="section-row"><span>🚨 Urgentes</span><span class="{urg_color}">{cal_urg}</span></div>'
+                f'</div>'
+            )
 
         # ── Seção: Conteúdo (últimos 30 dias) ────────────────────
         sc_aprov  = scr.get("aprovados",  0)
@@ -372,38 +329,20 @@ else:
         sc_rej_color  = "section-val-yellow" if sc_rejeit  > 0 else "section-val"
         cap_rej_color = "section-val-yellow" if cap_rejeit > 0 else "section-val"
 
-        content_html = f"""
-        <div class="card-section">
-            <div class="section-title">✍️ Conteúdo — últimos 30 dias</div>
-            <div style="color:#64748b;font-size:0.72rem;margin-bottom:4px;">Roteiros</div>
-            <div class="section-row">
-                <span>Aprovados</span>
-                <span class="section-val-green">{sc_aprov}</span>
-            </div>
-            <div class="section-row">
-                <span>Rejeitados</span>
-                <span class="{sc_rej_color}">{sc_rejeit}</span>
-            </div>
-            <div class="section-row">
-                <span>Pendentes</span>
-                <span class="section-val">{sc_pend}</span>
-            </div>
-            <hr class="divider">
-            <div style="color:#64748b;font-size:0.72rem;margin-bottom:4px;">Legendas</div>
-            <div class="section-row">
-                <span>Aprovadas</span>
-                <span class="section-val-green">{cap_aprov}</span>
-            </div>
-            <div class="section-row">
-                <span>Rejeitadas</span>
-                <span class="{cap_rej_color}">{cap_rejeit}</span>
-            </div>
-            <div class="section-row">
-                <span>Pendentes</span>
-                <span class="section-val">{cap_pend}</span>
-            </div>
-        </div>
-        """
+        content_html = (
+            f'<div class="card-section">'
+            f'<div class="section-title">✍️ Conteúdo — últimos 30 dias</div>'
+            f'<div style="color:#64748b;font-size:0.72rem;margin-bottom:4px;">Roteiros</div>'
+            f'<div class="section-row"><span>Aprovados</span><span class="section-val-green">{sc_aprov}</span></div>'
+            f'<div class="section-row"><span>Rejeitados</span><span class="{sc_rej_color}">{sc_rejeit}</span></div>'
+            f'<div class="section-row"><span>Pendentes</span><span class="section-val">{sc_pend}</span></div>'
+            f'<hr class="divider">'
+            f'<div style="color:#64748b;font-size:0.72rem;margin-bottom:4px;">Legendas</div>'
+            f'<div class="section-row"><span>Aprovadas</span><span class="section-val-green">{cap_aprov}</span></div>'
+            f'<div class="section-row"><span>Rejeitadas</span><span class="{cap_rej_color}">{cap_rejeit}</span></div>'
+            f'<div class="section-row"><span>Pendentes</span><span class="section-val">{cap_pend}</span></div>'
+            f'</div>'
+        )
 
         # ── Alertas ───────────────────────────────────────────────
         if alerts:
@@ -434,29 +373,25 @@ else:
         if nicho:
             nicho_html = f'<span style="font-size:0.75rem;color:#64748b;margin-left:8px;">· {nicho}{" / "+sub if sub else ""}</span>'
 
-        st.markdown(
-            f"""
-            <div class="client-card">
-                <div class="client-card-header">
-                    <span class="semaforo semaforo-{color}"></span>
-                    <span class="client-name">{name}</span>
-                    {handle_html}
-                    {nicho_html}
-                    {score_html}
-                </div>
-                <div class="card-sections">
-                    {report_html}
-                    {cal_html}
-                    {content_html}
-                </div>
-                {alerts_html}
-                <div style="margin-top:10px;border-top:1px solid #f1f5f9;padding-top:8px;">
-                    {action_links}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
+        # st.html() renderiza HTML direto sem passar pelo parser Markdown,
+        # evitando o problema de HTML aninhado aparecer como texto bruto.
+        card_html = (
+            f'<div class="client-card">'
+            f'<div class="client-card-header">'
+            f'<span class="semaforo semaforo-{color}"></span>'
+            f'<span class="client-name">{name}</span>'
+            f'{handle_html}{nicho_html}{score_html}'
+            f'</div>'
+            f'<div class="card-sections">'
+            f'{report_html}{cal_html}{content_html}'
+            f'</div>'
+            f'{alerts_html}'
+            f'<div style="margin-top:10px;border-top:1px solid #f1f5f9;padding-top:8px;">'
+            f'{action_links}'
+            f'</div>'
+            f'</div>'
         )
+        st.html(card_html)
 
 # ── Rodapé ────────────────────────────────────────────────────────────────────
 
